@@ -1,12 +1,13 @@
 //Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно
-function getRandom (min, max) {
+function getRandom (min, max, exp) {
   if (min < 0 || max <= min) {
     return 'Значение "от" не должно быть отрицательным. Значение "до" должно быть больше значения "от".';
   }
   const random = min + Math.random() * (max - min);
-  return random;
+  const expon = Math.pow(10, exp);
+  return (Math.round(random * expon) / expon);
 }
-getRandom (-1, -10);
+getRandom (1, 7, 10);
 
 //Функция, возвращающая случайное целое число из переданного диапазона включительно
 function getRandomRound (min, max) {
