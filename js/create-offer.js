@@ -1,3 +1,20 @@
+import {getRandomArrayElement} from './utils/get-random-array-element.js';
+import {getRandomInt} from './utils/get-random-int.js';
+import {getRandomFloat} from './utils/get-random-float.js';
+import {getRandomArraySlice} from './utils/get-random-array-slice.js';
+
+const LAT_MIN = 35.65000;
+const LAT_MAX = 35.70000;
+const LNG_MIN = 139.70000;
+const LNG_MAX = 139.80000;
+const MIN_PRICE = 1500;
+const MAX_PRICE = 1000000;
+const MIN_ROOMS = 1;
+const MAX_ROOMS = 25;
+const MIN_GUESTS = 1;
+const MAX_GUESTS = 20;
+const EXP = 5;
+
 const TITLES = [
   'testTitle01',
   'testTitle02',
@@ -53,32 +70,12 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const latMin = 35.65000;
-const latMax = 35.70000;
-const lngMin = 139.70000;
-const lngMax = 139.80000;
-const minPrice = 1500;
-const maxPrice = 1000000;
-const minRooms = 1;
-const maxRooms = 25;
-const minGuests = 1;
-const maxGuests = 20;
-
-import {getRandomArrayElement} from './utils/get-random-array-element.js';
-import {getRandomInt} from './utils/get-random-int.js';
-import {getRandomFloat} from './utils/get-random-float.js';
-import {getRandomArraySlice} from './utils/get-random-array-slice.js';
-
-const LAT = (min, max, exp) => getRandomFloat(min, max, exp);
-const LNG  = (min, max, exp) => getRandomFloat(min, max, exp);
-
 const createOffer = (index) => {
-  let avatarIndex = index + 1;
-  if (avatarIndex < 10) {
-    avatarIndex ='0' + (index + 1);
-  } else {
-    String(avatarIndex);
-  }
+  const currentLat = getRandomFloat(LAT_MIN, LAT_MAX, EXP);
+  const currentLng  = getRandomFloat(LNG_MIN, LNG_MAX, EXP);
+
+  const avatarIndex =  `${  index}`.padStart(2, '0');
+
 
   return {
     author: {
@@ -86,22 +83,24 @@ const createOffer = (index) => {
     },
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: `${LAT(latMin, latMax, 5)}, ${LNG(lngMin, lngMax, 5)}`,
-      price: getRandomInt(minPrice, maxPrice),
+      address: `${currentLat}, ${currentLng}`,
+      price: getRandomInt(MIN_PRICE, MAX_PRICE),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomInt(minRooms, maxRooms),
-      guests: getRandomInt(minGuests, maxGuests),
+      rooms: getRandomInt(MIN_ROOMS, MAX_ROOMS),
+      guests: getRandomInt(MIN_GUESTS, MAX_GUESTS),
       checkin: getRandomArrayElement(CHECK_IN_OUT_TIMES),
       checkout: getRandomArrayElement(CHECK_IN_OUT_TIMES),
       features: getRandomArraySlice(FEATURES),
       description: getRandomArrayElement(DESCRIPTIONS),
       photos: getRandomArraySlice(PHOTOS),
-      location: {
-        lat: LAT (latMin, latMax, 5),
-        lng: LNG (lngMin, lngMax, 5),
-      },
+    },
+    location: {
+      lat: currentLat,
+      lng: currentLng,
     },
   };
 };
 
-export {createOffer};
+const createOffers = (count) => new Array(count).fill(null).map((item, index) => createOffer(index + 1));
+
+export {createOffers};

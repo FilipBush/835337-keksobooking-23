@@ -1,6 +1,6 @@
-const OFFER_COUNT = 10;
+const OFFER_AMOUNT = 10;
 
-import {createOffer} from './create-offer.js';
+import {createOffers} from './create-offer.js';
 
-const Offers = new Array(OFFER_COUNT).fill(null).map((item, index) => createOffer(index));
-
+// eslint-disable-next-line no-unused-vars
+const offers = createOffers(OFFER_AMOUNT);
