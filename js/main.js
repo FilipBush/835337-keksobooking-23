@@ -1,6 +1,10 @@
-const OFFER_AMOUNT = 10;
+// Переносим в муодуль для генерации разметки похожих элементов (create-offer-list.js) ?
+// import {createOffers} from './create-offer.js';
+// const OFFER_AMOUNT = 10;
+// const offers = createOffers(OFFER_AMOUNT);
 
-import {createOffers} from './create-offer.js';
+import {offersList} from './create-offer-list.js';
 
-// eslint-disable-next-line no-unused-vars
-const offers = createOffers(OFFER_AMOUNT);
+// Почему не срабатывает offersList[0] для отрисовки одного элемента?
+document.querySelector('#map-canvas').appendChild(offersList);
+
