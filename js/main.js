@@ -1,10 +1,10 @@
-// Переносим в муодуль для генерации разметки похожих элементов (create-offer-list.js) ?
-// import {createOffers} from './create-offer.js';
-// const OFFER_AMOUNT = 10;
-// const offers = createOffers(OFFER_AMOUNT);
+import {createOffers} from './create-offer.js';
+import {renderCard} from './render-card.js';
 
-import {offersList} from './create-offer-list.js';
+const OFFER_AMOUNT = 10;
 
-// Почему не срабатывает offersList[0] для отрисовки одного элемента?
-document.querySelector('#map-canvas').appendChild(offersList);
+const map = document.querySelector('#map-canvas');
 
+const data = createOffers(OFFER_AMOUNT);
+const card = renderCard(data[0]);
+map.appendChild(card);
