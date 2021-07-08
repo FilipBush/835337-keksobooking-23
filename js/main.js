@@ -1,6 +1,10 @@
+import {createOffers} from './create-offer.js';
+import {renderCard} from './render-card.js';
+
 const OFFER_AMOUNT = 10;
 
-import {createOffers} from './create-offer.js';
+const map = document.querySelector('#map-canvas');
 
-// eslint-disable-next-line no-unused-vars
-const offers = createOffers(OFFER_AMOUNT);
+const data = createOffers(OFFER_AMOUNT);
+const card = renderCard(data[0]);
+map.appendChild(card);
