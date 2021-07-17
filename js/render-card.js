@@ -1,3 +1,5 @@
+import {numWord} from './utils/get-num-word.js';
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const typesMap = {
@@ -21,16 +23,6 @@ const fillPhotos = (photosItems, block) => {
     block.insertAdjacentHTML('afterbegin', photoItem);
   });
 };
-
-const numWord = (value, words) => {
-  value = Math.abs(value) % 100;
-  const num = value % 10;
-  if (value > 10 && value < 20) {return words[2];}
-  if (num > 1 && num < 5) {return words[1];}
-  if (num === 1) {return words[0];}
-  return words[2];
-};
-
 
 const renderCard = (offersItem) => {
   const offerCard = cardTemplate.cloneNode(true);
@@ -60,7 +52,7 @@ const renderCard = (offersItem) => {
   offerCard.querySelector('.popup__description').textContent = description;
   offerCard.querySelector('.popup__features').innerHTML = '';
   fillFeatures(features, featuresBlock);
-  offerCard.querySelector('.popup__photo').innerHTML = '';
+  offerCard.querySelector('.popup__photos').innerHTML = '';
   fillPhotos(photos, photosBlock);
 
   return offerCard;

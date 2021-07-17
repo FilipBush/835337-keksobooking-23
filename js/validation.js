@@ -1,6 +1,7 @@
 const MIN_AD_NAME_LENGTH = 30;
 const MAX_AD_NAME_LENGTH = 100;
 const MAX_AD_PRICE= 1000000;
+
 const adTitleInput = document.querySelector('#title');
 const adPriceInput = document.querySelector('#price');
 const adTypeInput = document.querySelector('#type');
@@ -9,6 +10,7 @@ const adTimeOut = document.querySelector('#timeout');
 const capacity = document.querySelector('#capacity');
 const capacityNumbers = capacity.querySelectorAll('option');
 const roomsNumbers = document.querySelector('#room_number');
+
 const typesMap = {
   flat: 1000,
   bungalow: 0,
@@ -16,6 +18,7 @@ const typesMap = {
   palace: 10000,
   hotel: 3000,
 };
+
 const matchRoomsCapacity = () => {
   capacityNumbers.forEach((capacityOption) => {
     if (capacityOption.value > roomsNumbers.value || capacityOption.value === 100 && roomsNumbers.value !== 0) {
@@ -25,6 +28,7 @@ const matchRoomsCapacity = () => {
     }
   });
 };
+
 const onPriceChange = () => {
   const priceValue = adPriceInput.value;
   if (priceValue > MAX_AD_PRICE) {
@@ -34,6 +38,7 @@ const onPriceChange = () => {
   }
   adTitleInput.reportValidity();
 };
+
 const onAdTitleChange = () => {
   const valueLength = adTitleInput.value.length;
   if (valueLength < MIN_AD_NAME_LENGTH) {
@@ -45,35 +50,34 @@ const onAdTitleChange = () => {
   }
   adTitleInput.reportValidity();
 };
+
 const onTypeChange = () => {
   adPriceInput.min = typesMap[adTypeInput.value];
   adPriceInput.placeholder = `${typesMap[adTypeInput.value]}`;
 };
+
 const onTimeInChange = () => {
   adTimeOut.forEach ((time) => {
     time.selected = false;
   });
   adTimeOut.querySelector(`option[value=${adTimeIn.value}]`).selected = true;
 };
+
 const onTimeOutChange = () => {
   adTimeIn.forEach ((time) => {
     time.selected = false;
   });
   adTimeIn.querySelector(`option[value=${adTimeOut.value}]`).selected = true;
 };
+
 const validatePage = () => {
   matchRoomsCapacity();
-  roomsNumbers.addEventListener('change', () => {
-    matchRoomsCapacity;
-  });
+  roomsNumbers.addEventListener('change', () => matchRoomsCapacity());
   adTitleInput.addEventListener('change', onAdTitleChange);
   adPriceInput.addEventListener('input', onPriceChange);
-};
-const conformPrice = () => {
   adTypeInput.addEventListener('change', onTypeChange);
-};
-const conformTime = () => {
   adTimeIn.addEventListener('change', onTimeInChange);
   adTimeOut.addEventListener('change', onTimeOutChange);
 };
-export {validatePage, conformPrice, conformTime};
+
+export {validatePage};
