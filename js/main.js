@@ -7,6 +7,8 @@ import {showAlert} from './utils/show-alert.js';
 
 // const OFFER_AMOUNT = 10;
 // const data = createOffers(OFFER_AMOUNT);
+//
+//
 
 const onDataLoad = (data) => {
   renderMarkers(data);
