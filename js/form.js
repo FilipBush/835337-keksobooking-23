@@ -1,18 +1,40 @@
 import {sendData} from './api.js';
-import {showAlert} from './utils/show-alert.js';
+import {resetMainPinMarker} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
+const adFormReset = adForm.querySelector('.ad-form__reset');
+const mapFilters = document.querySelector('.map__filters');
 
-const setUserFormSubmit = (onSuccess) => {
+const resetForm = () => {
+  adForm.reset();
+  mapFilters.reset();
+  resetMainPinMarker();
+};
+
+const onSendSuccess = () => {
+  resetForm();
+};
+
+const onSendFail = () => {
+  resetForm();
+};
+
+
+const setUserFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
 
     sendData (
-      () => onSuccess(),
-      () => showAlert('Не удалось отправить форму. Попробуйте ещё раз'),
-      new formData (evt.target),
+      onSendSuccess,
+      onSendFail,
+      formData,
     );
+  });
+
+  adFormReset.addEventListener(onclick, (evt) => {
+    evt.preventDefault();
+    resetForm();
   });
 };
 
