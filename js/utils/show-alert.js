@@ -21,13 +21,13 @@ const showAlertMessage = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const showAlertError = () => {};
-const showAlertSuccess = () => {
+
+const showAlertError = () => {
   const pageBody = document.querySelector('body');
-  const alertTemplate = document.querySelector('#success').content.querySelector('.popup');
+  const alertTemplate = pageBody.querySelector('#error').content.querySelector('.error');
   const alertCard = alertTemplate.cloneNode(true);
   pageBody.insertAdjacentElement('beforeend', alertCard);
-  document.addEventListener('click', pageBody.alertCard.remove);
+  // document.addEventListener('click', alertCard.remove());
 };
 
-export {showAlertMessage, showAlertError, showAlertSuccess};
+export {showAlertMessage, showAlertError};

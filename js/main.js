@@ -1,8 +1,8 @@
 import {initiateMap} from './map.js';
-// import {validatePage} from './validation.js';
+import {validatePage} from './validation.js';
 import {setUserFormSubmit} from './form.js';
 
 
-// validatePage();
+validatePage();
 initiateMap();
 setUserFormSubmit();

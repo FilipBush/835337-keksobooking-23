@@ -96,8 +96,7 @@ const resetMainPinMarker = () => {
       lat: LAT_DEFAULT,
       lng: LNG_DEFAULT,
     }, mapZoom);
-  mainPinMarker.remove();
-  mainPinMarker.addTo(map);
+  mainPinMarker.setLatLng(L.latLng(LAT_DEFAULT, LNG_DEFAULT));
   adAddressInput.value = `${LAT_DEFAULT}, ${LNG_DEFAULT}`;
 };
 

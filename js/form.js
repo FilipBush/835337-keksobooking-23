@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
 import {resetMainPinMarker} from './map.js';
+import {showAlertError} from './utils/show-alert.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormReset = adForm.querySelector('.ad-form__reset');
@@ -17,6 +18,7 @@ const onSendSuccess = () => {
 
 const onSendFail = () => {
   resetForm();
+  showAlertError();
 };
 
 
@@ -32,7 +34,7 @@ const setUserFormSubmit = () => {
     );
   });
 
-  adFormReset.addEventListener(onclick, (evt) => {
+  adFormReset.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
   });
