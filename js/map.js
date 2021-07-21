@@ -3,6 +3,7 @@ import {renderCard} from './render-card.js';
 import {roundNumber} from './utils/get-round-number.js';
 import {getData} from './api.js';
 import {showAlertMessage} from './utils/show-alert.js';
+import {setFilterListener} from './utils/filter.js';
 
 const LAT_DEFAULT = 35.68951;
 const LNG_DEFAULT = 139.69211;
@@ -10,8 +11,10 @@ const LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const LAYER_ATTRIBUTE = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const adAddressInput = document.querySelector('#address');
 const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
 const mapZoom = 10;
 const coordinateDegree = 5;
+
 const mainPinSize = {
   X: 52,
   Y: 52,
@@ -57,13 +60,16 @@ const renderMarkers = (offers) => {
       },
     );
     similarPinMarker
-      .addTo(map)
+      .addTo(markerGroup)
       .bindPopup(renderCard(offer));
   });
 };
 
+const clearMarkers = () => { markerGroup.clearLayers();};
+
 const onDataLoad = (data) => {
   renderMarkers(data.slice(0, 10));
+  setFilterListener(data);
 };
 
 const onDataFail = () => {
@@ -100,4 +106,4 @@ const resetMainPinMarker = () => {
   adAddressInput.value = `${LAT_DEFAULT}, ${LNG_DEFAULT}`;
 };
 
-export {initiateMap, renderMarkers, resetMainPinMarker};
+export {initiateMap, renderMarkers, resetMainPinMarker, clearMarkers};
