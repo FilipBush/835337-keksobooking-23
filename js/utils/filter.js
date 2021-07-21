@@ -11,10 +11,6 @@ const roomsInput = mapFilter.querySelector('#housing-rooms');
 const guestsInput = mapFilter.querySelector('#housing-guests');
 const featuresList = mapFilter.querySelector('#housing-features');
 
-const isActiveFeature = (element, array) => {
-  array.includes(element);
-};
-
 const prices = {
   low: {
     min: 0,
@@ -79,7 +75,11 @@ const filterByGuests = (offer) => {
 
 const filterByFeatures = (offer) => {
   const checkedFeatures = Array.from(featuresList.querySelectorAll('input:checked'));
-  checkedFeatures.every(isActiveFeature(offer.offer.features));
+  if (offer.offer.features) {
+    return checkedFeatures.every((feature) => offer.offer.features.includes(feature.value));
+  }
+
+  return false;
 };
 
 
@@ -95,12 +95,11 @@ const filterOffers = (offers) => offers.filter((item) => (
 const updateOffers = (data) => {
   clearMarkers();
   const filteredOffers = filterOffers(data);
-  renderMarkers(filteredOffers);
+  renderMarkers(filteredOffers.slice(0, 10));
 };
 
 const setFilterListener = (offers) => {
   mapFilter.addEventListener('change', debounce(() => updateOffers(offers), RERENDER_DELAY));
-  console.log(featuresList.querySelectorAll('input:checked'));
 };
 
 export {setFilterListener};
