@@ -10,63 +10,75 @@ const priceInput = mapFilter.querySelector('#housing-price');
 const roomsInput = mapFilter.querySelector('#housing-rooms');
 const guestsInput = mapFilter.querySelector('#housing-guests');
 
+const prices = {
+  low: {
+    min: 0,
+    max: 10000,
+  },
+
+  middle: {
+    min: 10000,
+    max: 50000,
+  },
+
+  high: {
+    min: 50000,
+  },
+};
 
 const filterByType = (offer) => {
-  if (typeInput.value === 'any')
-  {return true;}
-
-  if (typeInput.value === offer.offer.type)
-  {return true;}
+  if (typeInput.value === 'any' || typeInput.value === offer.offer.type) {
+    return true;
+  }
 
   return false;
 };
 
 const filterByPrice = (offer) => {
-  if (priceInput.value === 'any')
-  {return true;}
+  if (priceInput.value === 'any') {
+    return true;
+  }
 
-  if (priceInput.value === 'low'
-      && offer.offer.price < 10000)
-  {return true;}
+  if (priceInput.value === 'low' && offer.offer.price < prices[priceInput.value].max) {
+    return true;
+  }
 
   if (priceInput.value === 'middle'
-    && offer.offer.price >= 10000
-    && offer.offer.price <= 50000)
-  {return true;}
+  && offer.offer.price >= prices[priceInput.value].min
+  && offer.offer.price <= prices[priceInput.value].max) {
+    return true;
+  }
 
-  if (priceInput.value === 'high'
-    && offer.offer.price > 50000)
-  {return true;}
+  if (priceInput.value === 'high' && offer.offer.price > prices[priceInput.value].min) {
+    return true;
+  }
 
   return false;
 };
 
 const filterByRooms = (offer) => {
-  if (roomsInput.value === 'any')
-  {return true;}
-
-  if (roomsInput.value === offer.offer.rooms)
-  {return true;}
+  if (roomsInput.value === 'any' || +roomsInput.value === offer.offer.rooms) {
+    return true;
+  }
 
   return false;
 };
 
 const filterByGuests = (offer) => {
-  if (guestsInput.value === 'any') {return true;}
-
-  if (guestsInput.options[guestsInput.selectedIndex].value === offer.offer.guests) {return true;}
+  if (guestsInput.value === 'any' || +guestsInput.value === offer.offer.guests) {
+    return true;
+  }
 
   return false;
 };
 
 
-const filterOffers = (offers) => {
-  offers
-    .filter(filterByType)
-    .filter(filterByPrice)
-    .filter(filterByRooms)
-    .filter(filterByGuests);
-};
+const filterOffers = (offers) => offers.filter((item) => (
+  filterByType(item)
+  && filterByPrice(item)
+  && filterByRooms(item)
+  && filterByGuests(item)
+));
 
 
 const updateOffers = (data) => {
@@ -76,8 +88,7 @@ const updateOffers = (data) => {
 };
 
 const setFilterListener = (offers) => {
-  // mapFilter.addEventListener('change', () => updateOffers(offers));
-  mapFilter.addEventListener('change', () => debounce(updateOffers(offers), RERENDER_DELAY));
+  mapFilter.addEventListener('change', debounce(() => updateOffers(offers), RERENDER_DELAY));
 };
 
 export {setFilterListener};
