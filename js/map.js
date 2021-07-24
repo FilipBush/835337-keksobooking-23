@@ -1,4 +1,5 @@
-import {activatePage} from './set-elements-status.js';
+
+import {activatePage, disablePage} from './set-elements-status.js';
 import {renderCard} from './render-card.js';
 import {roundNumber} from './utils/get-round-number.js';
 import {getData} from './api.js';
@@ -77,6 +78,7 @@ const onDataFail = () => {
 };
 
 const initiateMap = () => {
+  disablePage();
   map.on('load', () => {
     activatePage();
     getData(onDataLoad, onDataFail);
@@ -85,11 +87,9 @@ const initiateMap = () => {
       lat: LAT_DEFAULT,
       lng: LNG_DEFAULT,
     }, mapZoom);
-
   L.tileLayer(LAYER, {attribution: LAYER_ATTRIBUTE}).addTo(map);
   adAddressInput.value = `${LAT_DEFAULT}, ${LNG_DEFAULT}`;
   mainPinMarker.addTo(map);
-
   mainPinMarker.on('move', (evt) => {
     const { lat, lng } = evt.target.getLatLng();
     adAddressInput.value = `${roundNumber(lat, coordinateDegree)}, ${roundNumber(lng, coordinateDegree)}`;

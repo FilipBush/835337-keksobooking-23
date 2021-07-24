@@ -1,3 +1,4 @@
+
 const MIN_AD_NAME_LENGTH = 30;
 const MAX_AD_NAME_LENGTH = 100;
 const MAX_AD_PRICE= 1000000;
@@ -21,10 +22,17 @@ const typesMap = {
 
 const matchRoomsCapacity = () => {
   capacityNumbers.forEach((capacityOption) => {
-    if (capacityOption.value > roomsNumbers.value || capacityOption.value === 100 && roomsNumbers.value !== 0) {
+    const condition1 = capacityOption.value !== 0 && roomsNumbers.value !== 100;
+    const condition2 = capacityOption.value > roomsNumbers.value;
+    const condition3 = capacityOption.value === 0 && roomsNumbers.value !== 100;
+    if (condition1 && condition2) {
       capacityOption.disabled = true;
     } else {
-      capacityOption.disabled = false;
+      if (condition3) {
+        capacityOption.disabled = true;
+      } else {
+        capacityOption.disabled = false;
+      }
     }
   });
 };
@@ -55,19 +63,11 @@ const onTypeChange = () => {
   adPriceInput.min = typesMap[adTypeInput.value];
   adPriceInput.placeholder = `${typesMap[adTypeInput.value]}`;
 };
-
-const onTimeInChange = () => {
-  adTimeOut.forEach ((time) => {
-    time.selected = false;
-  });
-  adTimeOut.querySelector(`option[value=${adTimeIn.value}]`).selected = true;
+const onTimeInChange = (evt) => {
+  adTimeOut.value = evt.target.value;
 };
-
-const onTimeOutChange = () => {
-  adTimeIn.forEach ((time) => {
-    time.selected = false;
-  });
-  adTimeIn.querySelector(`option[value=${adTimeOut.value}]`).selected = true;
+const onTimeOutChange = (evt) => {
+  adTimeIn.value = evt.target.value;
 };
 
 const validatePage = () => {
@@ -81,3 +81,4 @@ const validatePage = () => {
 };
 
 export {validatePage};
+

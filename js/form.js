@@ -1,6 +1,6 @@
 import {sendData} from './api.js';
 import {resetMainPinMarker} from './map.js';
-import {showAlertError} from './utils/show-alert.js';
+import {showErrorCard, showSuccessCard} from './utils/show-alert.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormReset = adForm.querySelector('.ad-form__reset');
@@ -14,13 +14,12 @@ const resetForm = () => {
 
 const onSendSuccess = () => {
   resetForm();
+  showSuccessCard();
 };
 
 const onSendFail = () => {
-  resetForm();
-  showAlertError();
+  showErrorCard();
 };
-
 
 const setUserFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
