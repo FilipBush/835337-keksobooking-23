@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {resetMainPinMarker} from './map.js';
+import {resetMap} from './map.js';
 import {showErrorCard, showSuccessCard} from './utils/show-alert.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -9,7 +9,7 @@ const mapFilters = document.querySelector('.map__filters');
 const resetForm = () => {
   adForm.reset();
   mapFilters.reset();
-  resetMainPinMarker();
+  resetMap();
 };
 
 const onSendSuccess = () => {

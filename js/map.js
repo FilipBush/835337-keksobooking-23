@@ -1,10 +1,10 @@
-
 import {activatePage, disablePage} from './set-elements-status.js';
 import {renderCard} from './render-card.js';
 import {roundNumber} from './utils/get-round-number.js';
 import {getData} from './api.js';
 import {showAlertMessage} from './utils/show-alert.js';
 import {setFilterListener} from './utils/filter.js';
+
 
 const LAT_DEFAULT = 35.68951;
 const LNG_DEFAULT = 139.69211;
@@ -13,8 +13,10 @@ const LAYER_ATTRIBUTE = '&copy; <a href="https://www.openstreetmap.org/copyright
 const adAddressInput = document.querySelector('#address');
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
+const markerAmount = 10;
 const mapZoom = 10;
 const coordinateDegree = 5;
+let initialOffers;
 
 const mainPinSize = {
   X: 52,
@@ -66,11 +68,14 @@ const renderMarkers = (offers) => {
   });
 };
 
-const clearMarkers = () => { markerGroup.clearLayers();};
+const clearMarkers = () => markerGroup.clearLayers();
+
+const renderInitialMarkers = (data) => renderMarkers(data.slice(0, markerAmount));
 
 const onDataLoad = (data) => {
-  renderMarkers(data.slice(0, 10));
+  renderInitialMarkers(data);
   setFilterListener(data);
+  initialOffers = data;
 };
 
 const onDataFail = () => {
@@ -88,6 +93,7 @@ const initiateMap = () => {
       lng: LNG_DEFAULT,
     }, mapZoom);
   L.tileLayer(LAYER, {attribution: LAYER_ATTRIBUTE}).addTo(map);
+  adAddressInput.setAttribute('readonly', true);
   adAddressInput.value = `${LAT_DEFAULT}, ${LNG_DEFAULT}`;
   mainPinMarker.addTo(map);
   mainPinMarker.on('move', (evt) => {
@@ -96,7 +102,7 @@ const initiateMap = () => {
   });
 };
 
-const resetMainPinMarker = () => {
+const resetMap = () => {
   map
     .setView({
       lat: LAT_DEFAULT,
@@ -104,6 +110,8 @@ const resetMainPinMarker = () => {
     }, mapZoom);
   mainPinMarker.setLatLng(L.latLng(LAT_DEFAULT, LNG_DEFAULT));
   adAddressInput.value = `${LAT_DEFAULT}, ${LNG_DEFAULT}`;
+  clearMarkers();
+  renderInitialMarkers(initialOffers);
 };
 
-export {initiateMap, renderMarkers, resetMainPinMarker, clearMarkers};
+export {initiateMap, renderMarkers, resetMap, clearMarkers};

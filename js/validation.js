@@ -1,4 +1,3 @@
-
 const MIN_AD_NAME_LENGTH = 30;
 const MAX_AD_NAME_LENGTH = 100;
 const MAX_AD_PRICE= 1000000;
@@ -22,18 +21,7 @@ const typesMap = {
 
 const matchRoomsCapacity = () => {
   capacityNumbers.forEach((capacityOption) => {
-    const condition1 = capacityOption.value !== 0 && roomsNumbers.value !== 100;
-    const condition2 = capacityOption.value > roomsNumbers.value;
-    const condition3 = capacityOption.value === 0 && roomsNumbers.value !== 100;
-    if (condition1 && condition2) {
-      capacityOption.disabled = true;
-    } else {
-      if (condition3) {
-        capacityOption.disabled = true;
-      } else {
-        capacityOption.disabled = false;
-      }
-    }
+    capacityOption.disabled = capacityOption.value > roomsNumbers.value || capacityOption.value === 100 && roomsNumbers.value !== 0;
   });
 };
 

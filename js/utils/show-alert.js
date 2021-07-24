@@ -1,4 +1,3 @@
-
 import { isEscEvent } from './isEscEvent.js';
 
 const ALERT_SHOW_TIME = 6000;
@@ -6,9 +5,9 @@ const ALERT_SHOW_TIME = 6000;
 const pageBody = document.querySelector('body');
 const errorTemplate = pageBody.querySelector('#error').content.querySelector('.error');
 const errorCard = errorTemplate.cloneNode(true);
-const errorButton = errorCard.querySelector('.error__button');
 const successTemplate = pageBody.querySelector('#success').content.querySelector('.success');
 const successCard = successTemplate.cloneNode(true);
+let onDocumentKeyDown;
 
 const showAlertMessage = (message) => {
   const alertContainer = document.createElement('div');
@@ -31,48 +30,26 @@ const showAlertMessage = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const closeErrorCard = () => {
-  errorCard.remove();
-  errorButton.removeEventListener('click', () => { closeErrorCard(); });
-  document.removeEventListener('keydown', (evt) => {
-    if (isEscEvent) {
-      evt.preventDeafault();
-      closeErrorCard();
+const renderPopup = (modal) => {
+  const onClose = () => {
+    modal.remove();
+    document.removeEventListener('keydown', onDocumentKeyDown);
+  };
+
+  const onModalClick = () => onClose();
+
+  onDocumentKeyDown = (evt) => {
+    if (isEscEvent(evt)) {
+      onClose;
     }
-  });
+  };
+
+  pageBody.insertAdjacentElement('beforeend', modal);
+  modal.addEventListener('click', onModalClick);
+  document.addEventListener('keydown', onDocumentKeyDown);
 };
 
-const closeSuccessCard = () => {
-  successCard.remove();
-  document.removeEventListener('click', () => { closeSuccessCard(); });
-  document.removeEventListener('keydown', (evt) => {
-    if (isEscEvent) {
-      evt.preventDeafault();
-      closeSuccessCard();
-    }
-  });
-};
-
-const showErrorCard = () => {
-  pageBody.insertAdjacentElement('beforeend', errorCard);
-  errorButton.addEventListener('click', () => { closeErrorCard();});
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent) {
-      evt.preventDefault();
-      closeErrorCard();
-    }
-  });
-};
-
-const showSuccessCard = () => {
-  pageBody.insertAdjacentElement('beforeend', successCard);
-  document.addEventListener('click', () => { closeSuccessCard();});
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent) {
-      evt.preventDefault();
-      closeSuccessCard();
-    }
-  });
-};
+const showErrorCard = () => renderPopup(errorCard);
+const showSuccessCard = () => renderPopup(successCard);
 
 export {showAlertMessage, showErrorCard, showSuccessCard};
